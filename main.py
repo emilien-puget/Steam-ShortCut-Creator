@@ -1,24 +1,28 @@
-import configparser
 import os
+import platform
+
 import steamCmd
+from os_specific import *
 
-if os.path.isfile('settings.cfg'):
-    parser = configparser.ConfigParser()
-    parser.read('settings.cfg')
+OsSpecificFactory = os_specific_factory.OsSpecificFactory()
+osSpecificImplementation = OsSpecificFactory.create(platform.system())()
 
-    steam_cmd_path = parser.get('parameters', 'steam_cmd_path')
-    path = os.path.dirname(__file__) + '/' + steam_cmd_path
-    if os.path.isfile(path):
-        steam = steamCmd.SteamCmd(path)
-        games = steam.get_installed_game()
-        if len(games) > 0:
-            for game in games:
-                game.update(steam.get_app_icons(game['id']))
-            print(str(len(games)) + " game" + ("s" if len(games) > 0 else "") + " found")
-            print(games)
-        else:
-            print('no game found')
-    else:
-        print("Can't find steamCmd at '" + path + "'")
-else:
+if not issubclass(osSpecificImplementation.__class__, os_specific_interface.OsSpecific):
+    print('No implementation found for ' + platform.system())
     exit()
+
+print('Looking for steamcmd')
+steam_cmd_path = osSpecificImplementation.download_steamcmd(os.path.dirname(__file__) + '/steamcmd')
+if not steam_cmd_path or not os.path.isfile(steam_cmd_path):
+    exit()
+
+steam = steamCmd.SteamCmd(steam_cmd_path)
+print('Fetching installed applications')
+games = steam.get_installed_game()
+if len(games) > 0:
+    print(str(len(games)) + " application" + ("s" if len(games) > 0 else "") + " found")
+
+    for game in games:
+        osSpecificImplementation.create_shortcut(steam.get_app_icons(game['id']))
+else:
+    print('No application found')

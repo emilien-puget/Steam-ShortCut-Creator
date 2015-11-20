@@ -21,7 +21,8 @@ class SteamCmd:
 
         for line in self._execute('app_info_print ' + str(int(id_game))):
             match = re.match(
-                "(^.*\"clienticon\".*\"(?P<clienticon>[0-9a-z]+)\")|(^.*\"linuxclienticon\".*\"(?P<linuxclienticon>[0-9a-z]+)\")",
+                "(^.*\"clienticon\".*\"(?P<clienticon>[0-9a-z]+)\")"
+                "|(^.*\"linuxclienticon\".*\"(?P<linuxclienticon>[0-9a-z]+)\")",
                 line)
             if match:
                 if match.group('clienticon'):
