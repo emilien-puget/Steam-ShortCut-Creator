@@ -12,6 +12,7 @@ class OsSpecific:
     def create_shortcut(self, game):
         pass
 
+    @staticmethod
     @abc.abstractmethod
-    def get_os_name(self):
+    def get_os_name():
         pass

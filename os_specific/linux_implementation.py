@@ -1,14 +1,14 @@
 import os
 import tarfile
 import urllib.request
-
-import os_specific.os_specific_interface as os_specific_interface
+from . import os_specific_interface
 
 
 class LinuxImplementation(os_specific_interface.OsSpecific):
     shortcut_folder = False
 
     def __init__(self):
+        print('starting linux process')
         user_home_directory = os.path.expanduser("~")
         for path in os.environ["PATH"].split(os.pathsep):
             if path[0:len(user_home_directory)] == user_home_directory and os.access(path, os.W_OK):
@@ -23,7 +23,6 @@ class LinuxImplementation(os_specific_interface.OsSpecific):
                 os.mkdir(steamlnk_shortcuts_directory)
             os.environ["PATH"] += os.pathsep + steamlnk_shortcuts_directory
             self.shortcut_folder = steamlnk_shortcuts_directory
-
 
     def download_steamcmd(self, path):
         if not os.path.isdir(path):
@@ -55,5 +54,6 @@ class LinuxImplementation(os_specific_interface.OsSpecific):
 
         return 'fds'
 
-    def get_os_name(self):
+    @staticmethod
+    def get_os_name():
         return 'linux'

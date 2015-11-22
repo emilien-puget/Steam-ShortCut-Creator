@@ -33,8 +33,10 @@ class SteamCmd:
         return game_icon
 
     def _execute(self, function_name):
-        command = self.steam_cmd_path + ' +' + function_name + ' +quit'
+        command = self.steam_cmd_path + ' +' + function_name
 
-        output = subprocess.getoutput(command)
+        for x in range(0, 50):
+            command += ' +app_info_print 0 '
+        command += ' +quit'
 
-        return output.splitlines()
+        return subprocess.getoutput(command).splitlines()
