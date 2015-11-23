@@ -1,14 +1,16 @@
 import os
+import re
 import tarfile
 import urllib.request
+
 from . import os_specific_interface
 
 
 class LinuxImplementation(os_specific_interface.OsSpecific):
     shortcut_folder = False
 
-    def __init__(self):
-        print('starting linux process')
+    def __init__(self, location):
+        print('Starting linux process')
         user_home_directory = os.path.expanduser("~")
         for path in os.environ["PATH"].split(os.pathsep):
             if path[0:len(user_home_directory)] == user_home_directory and os.access(path, os.W_OK):
@@ -21,10 +23,11 @@ class LinuxImplementation(os_specific_interface.OsSpecific):
             steamlnk_shortcuts_directory = user_home_directory + '/.steamlnk_shortcuts'
             if not os.path.isdir(steamlnk_shortcuts_directory):
                 os.mkdir(steamlnk_shortcuts_directory)
-            os.environ["PATH"] += os.pathsep + steamlnk_shortcuts_directory
+
             self.shortcut_folder = steamlnk_shortcuts_directory
 
     def download_steamcmd(self, path):
+        path += '/steamcmd_client'
         if not os.path.isdir(path):
             os.mkdir(path)
         steamcmd = path + '/steamcmd.sh'
@@ -51,8 +54,12 @@ class LinuxImplementation(os_specific_interface.OsSpecific):
             return False
 
     def create_shortcut(self, game):
+        bin_shortcut = self.shortcut_folder + '/' + game['name']
+        print('Creating shortcut for: ' + game['name'] + ' in: ' + bin_shortcut)
 
-        return 'fds'
+        handle = os.fdopen(os.open(bin_shortcut, os.O_WRONLY | os.O_CREAT, int("0777", 8)), 'w')
+
+        handle.write('steam -applaunch ' + game['id'])
 
     @staticmethod
     def get_os_name():
