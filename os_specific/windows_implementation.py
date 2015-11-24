@@ -10,7 +10,7 @@ class WindowsImplementation(os_specific_interface.OsSpecific):
     shortcut_folder = False
     location = False
 
-    def __init__(self, location):
+    def __init__(self, location=None):
         print('Starting windows process')
         if not os.path.isfile(location + '\steam.exe'):
             print('Please place this file in the steam folder')
@@ -32,7 +32,7 @@ class WindowsImplementation(os_specific_interface.OsSpecific):
                                        archive)
         except Exception as error:
             print('Steamcmd can\'t be downloaded : ' + error.__str__())
-            exit()
+            return False
 
         zipfile.ZipFile(archive).extractall(path)
 

@@ -54,8 +54,9 @@ class LinuxImplementation(os_specific_interface.OsSpecific):
             return False
 
     def create_shortcut(self, game):
-        bin_shortcut = self.shortcut_folder + '/' + game['name']
-        print('Creating shortcut for: ' + game['name'] + ' in: ' + bin_shortcut)
+        game_name = re.sub('[ -\\/]', '', game['name'])
+        bin_shortcut = self.shortcut_folder + '/' + game_name
+        print('Creating shortcut for: ' + game_name + ' in: ' + bin_shortcut)
 
         handle = os.fdopen(os.open(bin_shortcut, os.O_WRONLY | os.O_CREAT, int("0777", 8)), 'w')
 
