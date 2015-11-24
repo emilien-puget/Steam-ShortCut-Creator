@@ -32,3 +32,4 @@ if len(games) > 0:
     sys.exit()
 else:
     print('No application found')
+    sys.exit()

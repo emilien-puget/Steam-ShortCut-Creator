@@ -2,6 +2,7 @@ import os
 import subprocess
 import urllib.request
 import zipfile
+import sys
 
 from . import os_specific_interface
 
@@ -14,7 +15,7 @@ class WindowsImplementation(os_specific_interface.OsSpecific):
         print('Starting windows process')
         if not os.path.isfile(location + '\steam.exe'):
             print('Please place this file in the steam folder')
-            exit()
+            sys.exit()
         self.location = location
         self.shortcut_folder = os.getenv('APPDATA') + '\Microsoft\Windows\Start Menu\Programs\steamlnk_shortcuts'
         if not os.path.isdir(self.shortcut_folder):
