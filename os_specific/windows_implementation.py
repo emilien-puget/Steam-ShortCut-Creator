@@ -46,7 +46,7 @@ class WindowsImplementation(os_specific_interface.OsSpecific):
     def create_shortcut(self, game):
         shortcut_file = self.shortcut_folder + "\\" + game['name'].replace(':', '') + '.lnk'
 
-        if 'clienticon' in game and os.path.isfile('D:\Jeux\Steam\steam\games\\' + game['clienticon'] + '.ico'):
+        if 'clienticon' in game and os.path.isfile(self.location + '\steam\games\\' + game['clienticon'] + '.ico'):
             clienticon = self.location + '\steam\games\\' + game['clienticon'] + '.ico'
         else:
             clienticon = self.location + '\Steam.exe'
