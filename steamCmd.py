@@ -9,7 +9,7 @@ class SteamCmd:
     def get_installed_game(self):
         games = []
         for line in self._execute('apps_installed'):
-            match = re.match("AppID (?P<id>\d+) : \"(?P<name>[^`\"]*)\" : (?P<path>.+) ", line)
+            match = re.match("AppID (?P<id>\d+) : \"(?P<name>[^`\"]*)\" : (?P<path>.+)", line)
             if match:
                 game_name = match.group('name')
                 print('Found game :' + game_name)
