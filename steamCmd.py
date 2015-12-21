@@ -11,7 +11,9 @@ class SteamCmd:
         for line in self._execute('apps_installed'):
             match = re.match("AppID (?P<id>\d+) : \"(?P<name>[^`\"]*)\" : (?P<path>.+)", line)
             if match:
-                game_name = match.group('name')
+                game_name = bytes(match.group('name'), 'utf8')
+
+                game_name = game_name.decode('utf-8').encode('ascii', 'ignore').decode("utf-8")
                 print('Found game :' + game_name)
                 game = {'id': match.group('id'), 'name': game_name, 'path': match.group('path')}
                 games.insert(0, game)

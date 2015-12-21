@@ -17,7 +17,7 @@ class WindowsImplementation(os_specific_interface.OsSpecific):
             print('Please place this file in the steam folder')
             sys.exit()
         self.location = location
-        self.shortcut_folder = os.getenv('APPDATA') + '\Microsoft\Windows\Start Menu\Programs\steamlnk_shortcuts'
+        self.shortcut_folder = os.getenv('APPDATA') + '\Microsoft\Windows\Start Menu\Programs\Steam'
         if not os.path.isdir(self.shortcut_folder):
             os.mkdir(self.shortcut_folder)
 

@@ -10,12 +10,13 @@ import os_specific.windows_implementation
 import os_specific.os_specific_factory as os_specific_factory
 
 OsSpecificFactory = os_specific_factory.OsSpecificFactory()
-osSpecificImplementation = OsSpecificFactory.create(platform.system())(os.getcwd())
+path = os.getcwd()
+osSpecificImplementation = OsSpecificFactory.create(platform.system())(path)
 if not issubclass(osSpecificImplementation.__class__, os_specific_interface.OsSpecific):
     print('No implementation found for ' + platform.system())
     sys.exit(-1)
 
-steam_cmd_path = osSpecificImplementation.download_steamcmd(os.getcwd())
+steam_cmd_path = osSpecificImplementation.download_steamcmd(path)
 if not steam_cmd_path or not os.path.isfile(steam_cmd_path):
     sys.exit(-1)
 
